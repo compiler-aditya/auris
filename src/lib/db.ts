@@ -4,8 +4,7 @@ import pg from "pg";
 const { Pool } = pg;
 
 declare global {
-  // eslint-disable-next-line no-var
-  var __voicesPgPool: pg.Pool | undefined;
+  var __overheardPgPool: pg.Pool | undefined;
 }
 
 function makePool() {
@@ -20,10 +19,10 @@ function makePool() {
 
 /** Lazy pool — only instantiates on first query so Next.js build doesn't need DATABASE_URL. */
 function getPool(): pg.Pool {
-  if (!globalThis.__voicesPgPool) {
-    globalThis.__voicesPgPool = makePool();
+  if (!globalThis.__overheardPgPool) {
+    globalThis.__overheardPgPool = makePool();
   }
-  return globalThis.__voicesPgPool;
+  return globalThis.__overheardPgPool;
 }
 
 export async function query<T extends pg.QueryResultRow = pg.QueryResultRow>(

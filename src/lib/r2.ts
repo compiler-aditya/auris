@@ -25,15 +25,14 @@ function makeClient() {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
-  var __voicesR2Client: S3Client | undefined;
+  var __overheardR2Client: S3Client | undefined;
 }
 
 function getClient(): S3Client {
-  if (!globalThis.__voicesR2Client) {
-    globalThis.__voicesR2Client = makeClient();
+  if (!globalThis.__overheardR2Client) {
+    globalThis.__overheardR2Client = makeClient();
   }
-  return globalThis.__voicesR2Client;
+  return globalThis.__overheardR2Client;
 }
 
 const bucket = () => requireEnv("R2_BUCKET_NAME");
