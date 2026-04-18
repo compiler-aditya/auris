@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { query, queryOne } from "@/lib/db";
 import { loadAllSpecs } from "@/lib/specs/loader";
 import { ConverseButton } from "@/components/ConverseButton";
+import { EncounterPlayer } from "@/components/EncounterPlayer";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ g?: string; a?: string; t?: string }>;
 }
 
 export const dynamic = "force-dynamic";
@@ -24,12 +26,17 @@ interface CharacterView {
   cover_style: string;
 }
 
-export default async function CharacterPage({ params }: PageProps) {
+export default async function CharacterPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const sp = await searchParams;
   const view = await resolveView(id);
   if (!view) notFound();
 
   const [titleA, titleB] = splitTitle(view.display_name);
+  const greetingUrl = sp?.g;
+  const ambientUrl = sp?.a;
+  const greetingText = sp?.t;
+  const hasFreshEncounter = Boolean(greetingUrl);
 
   return (
     <div className="min-h-screen grid lg:grid-cols-[1.1fr_1fr]">
@@ -59,8 +66,8 @@ export default async function CharacterPage({ params }: PageProps) {
               </>
             )}
           </h1>
-          <div className="mt-3.5 font-display italic text-sm" style={{ color: "rgba(245,239,224,0.7)" }}>
-            &ldquo;{view.quotes[0]?.q.slice(0, 60) ?? ""}&hellip;&rdquo;
+          <div className="mt-3.5 font-display italic text-base md:text-lg" style={{ color: "rgba(245,239,224,0.85)" }}>
+            &ldquo;{greetingText ?? view.quotes[0]?.q ?? ""}&rdquo;
           </div>
         </div>
       </section>
@@ -105,14 +112,16 @@ export default async function CharacterPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="mt-auto pt-4.5 flex gap-2.5 items-center">
+        {hasFreshEncounter && (
+          <EncounterPlayer
+            greetingUrl={greetingUrl}
+            ambientUrl={ambientUrl}
+            greetingText={greetingText}
+          />
+        )}
+
+        <div className="mt-auto pt-4.5">
           <ConverseButton characterId={view.id} variant="flush" />
-          <button
-            type="button"
-            className="px-[18px] py-4 bg-transparent text-ink2 border border-line2 rounded-full text-[13px] hover:bg-paper2 transition"
-          >
-            Replay greeting
-          </button>
         </div>
       </section>
     </div>

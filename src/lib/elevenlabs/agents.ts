@@ -38,7 +38,26 @@ export async function createAgent(
           stability: 0.5,
           similarity_boost: 0.75,
         },
-        asr: { quality: "high", provider: "elevenlabs" },
+        asr: {
+          quality: "high",
+          provider: "elevenlabs",
+          user_input_audio_format: "pcm_16000",
+        },
+        // VAD-based turn taking — without this, some agent revisions deliver
+        // the first_message and then never prompt for a user turn.
+        turn: {
+          turn_timeout: 7,
+          mode: "turn",
+        },
+        conversation: {
+          max_duration_seconds: 600,
+          client_events: [
+            "audio",
+            "interruption",
+            "user_transcript",
+            "agent_response",
+          ],
+        },
       },
       tags: ["auris", spec.kind, spec.slug],
     }),

@@ -4,15 +4,18 @@ import { notFound } from "next/navigation";
 import { queryOne } from "@/lib/db";
 import { loadAllSpecs } from "@/lib/specs/loader";
 import { ConverseButton } from "@/components/ConverseButton";
+import { EncounterPlayer } from "@/components/EncounterPlayer";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ g?: string; a?: string; t?: string }>;
 }
 
 export const dynamic = "force-dynamic";
 
-export default async function PairRevealPage({ params }: PageProps) {
+export default async function PairRevealPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const sp = await searchParams;
 
   const row = await queryOne<{ pair_slug: string }>(
     `SELECT ps.slug AS pair_slug
@@ -60,8 +63,19 @@ export default async function PairRevealPage({ params }: PageProps) {
             className="font-display italic text-xl md:text-2xl leading-[1.35] mt-6 max-w-[440px]"
             style={{ color: "#d4c8aa" }}
           >
-            &ldquo;{spec.greeting_templates[0]}&rdquo;
+            &ldquo;{sp?.t ?? spec.greeting_templates[0]}&rdquo;
           </p>
+
+          {sp?.g && (
+            <div className="mt-6">
+              <EncounterPlayer
+                greetingUrl={sp.g}
+                ambientUrl={sp.a}
+                greetingText={sp.t ?? spec.greeting_templates[0]}
+                tone="light"
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex justify-between items-end mt-10 flex-wrap gap-4">

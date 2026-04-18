@@ -12,6 +12,9 @@ interface AnalyzeResponse {
     id: string;
     kind: "category" | "landmark" | "pairing";
   };
+  greeting_url?: string;
+  ambient_url?: string | null;
+  greeting_text?: string;
   error?: string;
 }
 
@@ -37,8 +40,17 @@ export function Home() {
       const res = await fetch("/api/photos/analyze", { method: "POST", body: fd });
       const data = (await res.json()) as AnalyzeResponse;
       if (data.error || !data.character) throw new Error(data.error ?? "no character");
-      if (data.character.kind === "pairing") router.push(`/pair/${data.character.id}`);
-      else router.push(`/character/${data.character.id}`);
+
+      // Carry the ephemeral audio URLs + greeting forward so the destination
+      // page can auto-play the encounter rather than sitting silent.
+      const q = new URLSearchParams();
+      if (data.greeting_url) q.set("g", data.greeting_url);
+      if (data.ambient_url) q.set("a", data.ambient_url);
+      if (data.greeting_text) q.set("t", data.greeting_text);
+      const qs = q.toString() ? `?${q.toString()}` : "";
+
+      const base = data.character.kind === "pairing" ? "/pair" : "/character";
+      router.push(`${base}/${data.character.id}${qs}`);
     } catch (err) {
       setLastError(err instanceof Error ? err.message : String(err));
       setStatus("error");
