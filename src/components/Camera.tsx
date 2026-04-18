@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { ConverseButton } from "./ConverseButton";
 
 interface AnalyzeResponse {
   character?: {
@@ -107,51 +108,10 @@ export function Camera() {
             <audio ref={ambientRef} src={response.ambient_url} className="hidden" />
           )}
           {character?.agent_id && (
-            <TalkBackButton characterId={character.id} />
+            <ConverseButton characterId={character.id} />
           )}
         </div>
       )}
     </div>
-  );
-}
-
-function TalkBackButton({ characterId }: { characterId: string }) {
-  const [status, setStatus] = useState<"idle" | "connecting" | "connected" | "error">("idle");
-
-  async function handleClick() {
-    setStatus("connecting");
-    try {
-      const res = await fetch("/api/converse/start", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ character_id: characterId }),
-      });
-      const data = (await res.json()) as { signed_url?: string; error?: string };
-      if (!data.signed_url) throw new Error(data.error ?? "no signed_url");
-      setStatus("connected");
-      // Day 3: replace this alert with an inline WebSocket conversation using @elevenlabs/client.
-      window.open(data.signed_url, "_blank");
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
-    }
-  }
-
-  const label = {
-    idle: "Talk back",
-    connecting: "Connecting…",
-    connected: "Opened",
-    error: "Unavailable",
-  }[status];
-
-  return (
-    <button
-      type="button"
-      className="rounded-full border border-ember text-ember px-6 py-2 text-sm hover:bg-ember hover:text-parchment disabled:opacity-40"
-      onClick={handleClick}
-      disabled={status === "connecting" || status === "connected"}
-    >
-      {label}
-    </button>
   );
 }

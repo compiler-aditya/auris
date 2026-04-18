@@ -23,10 +23,28 @@ describe("loadAllSpecs", () => {
     }
   });
 
-  it("loads at least one landmark spec", async () => {
+  it("loads all 8 landmark specs", async () => {
     const specs = await loadAllSpecs({ force: true });
-    expect(specs.landmarks.size).toBeGreaterThanOrEqual(1);
-    expect(specs.landmarks.has("rajwada-indore")).toBe(true);
+    expect(specs.landmarks.size).toBe(8);
+    for (const slug of [
+      "taj-mahal",
+      "rajwada-indore",
+      "gateway-of-india",
+      "red-fort",
+      "chai-stall",
+      "banyan-tree",
+      "arabian-sea",
+      "indian-railway-station",
+    ]) {
+      expect(specs.landmarks.has(slug)).toBe(true);
+    }
+  });
+
+  it("every landmark has at least 3 first_person_transforms", async () => {
+    const specs = await loadAllSpecs({ force: true });
+    for (const [slug, spec] of specs.landmarks) {
+      expect(spec.first_person_transforms.length, `${slug} transforms`).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it("loads at least one pairing spec with valid signatures", async () => {
