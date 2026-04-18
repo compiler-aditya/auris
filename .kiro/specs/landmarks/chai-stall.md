@@ -37,7 +37,7 @@ first_person_transforms:
   - fact: "The stall often shelters conversations about news and politics."
     voiced: "The country has been argued out under my awning many times. Mostly gently, sometimes not. The kettle has heard everything."
 ambient_signature:
-  prompt: "busy Indian street corner — traffic murmur, gas stove hiss, clatter of cups, occasional overheard"
+  prompt: "busy Indian street corner — traffic murmur, gas stove hiss, clatter of cups, occasional voices"
   duration_seconds: 12
 forbidden_registers:
   - cheeky

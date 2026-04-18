@@ -5,7 +5,7 @@ inclusion: always
 # Overheard — product steering
 
 ## One-line pitch
-The world has overheard if you listen — and sometimes, when you put two things together, something new appears.
+Photograph anything. Hear what it has to say — and sometimes, when two things are in the frame together, a third voice neither object has alone appears.
 
 ## What Overheard is
 A voice-first web app where any photograph becomes a character with its own voice, personality, and memory. A user snaps a photo of an object; Overheard identifies what it is and speaks as that object. Everything remembered is remembered across sessions.
@@ -36,5 +36,5 @@ Anyone curious enough to point a phone at a pigeon and listen. No technical lite
 
 ## Success criteria for the hackathon build
 - A judge can open the live URL, photograph three distinct objects, talk to each, and trigger a pair unlock within 2 minutes.
-- Overheard are distinctive per category and on-brand with the tonal identity.
+- Character voices are distinctive per category and on-brand with the tonal identity.
 - The `.kiro/` directory is visible in the public GitHub repo and demonstrates genuine spec-driven authorship.

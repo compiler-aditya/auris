@@ -1,6 +1,6 @@
 # Overheard
 
-> The world has overheard if you listen.
+> Photograph anything. Hear what it has to say.
 
 Overheard is a voice-first web app where any photograph becomes a character with its own voice, personality, and memory. Your couch speaks in a tired voice. The Taj Mahal speaks in first person about what it has seen. A pigeon on the sidewalk speaks like a New York wise-guy. Some objects remember you across days. And when you photograph two things together, sometimes a third, rare voice emerges that neither object has alone.
 
@@ -47,7 +47,7 @@ src/lib/            # vision, elevenlabs, spec loader, db, r2
 scripts/            # migrations, bootstrap, seed
 ```
 
-See [`voices-build-plan.docx`](../voices-build-plan.docx) for the full concept document and the [approved implementation plan](../../.claude/plans/home-aditya-elevenhack4-overheard-build-pl-inherited-cat.md) for day-by-day execution.
+The full `/.kiro` directory is the source of truth — read `steering/product.md` for the concept and `specs/pipeline/design.md` for the end-to-end flow.
 
 ## How to add a character
 
@@ -72,7 +72,7 @@ Every field is documented in `.kiro/specs/character-schema/design.md`. The tonal
 npm install
 cp .env.example .env.local  # then fill in keys
 npm run db:migrate
-npm run bootstrap           # creates ElevenLabs overheard + agents for all specs
+npm run bootstrap           # creates ElevenLabs voices + agents for all specs
 npm run dev                 # http://localhost:3000
 ```
 

@@ -12,7 +12,7 @@
 - [ ] **B3.** `src/lib/elevenlabs/sound-effects.ts` — calls the Sound Effects endpoint, uploads result to R2, returns `r2_key`.
 - [ ] **B4.** `src/lib/characters.ts` — implement the 4-branch resolver.
 - [ ] **B5.** Update `/api/photos/analyze` to call `resolveCharacter` instead of the hard-coded path.
-- [ ] **B6.** `scripts/bootstrap-characters.ts` — reads all specs, creates overheard + agents, writes to DB.
+- [ ] **B6.** `scripts/bootstrap-characters.ts` — reads all specs, creates voices + agents, writes to DB.
 
 ## Phase C — Landmarks + conversation (Day 3)
 - [ ] **C1.** `src/lib/elevenlabs/agents.ts` — create/update agent: system prompt from `buildSystemPrompt`, voice_id from voice-design or landmark override.

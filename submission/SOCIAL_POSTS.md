@@ -42,7 +42,7 @@
 
 ## Instagram Reels
 
-> The world has overheard if you listen.
+> Point your phone at anything. Hear what it has to say.
 >
 > A houseplant, the Taj Mahal, and a candle-plus-mirror walk into the frame. Each one speaks back.
 >

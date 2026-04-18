@@ -1,8 +1,8 @@
 # Demo video — script + storyboard
 
-Follow Section 7 of `voices-build-plan.docx`. Target: 60-second master; platform cuts derived from the master.
+Target: 60-second master; platform cuts derived from the master.
 
-## Production notes (from the build plan)
+## Production notes
 
 - Shoot on a decent phone — yours is fine. Daylight if possible.
 - Audio quality > video quality. Use a lav mic or phone mic in a quiet room; ambient room tone acceptable.

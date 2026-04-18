@@ -3,7 +3,7 @@
  * Overheard character-db MCP server.
  *
  * A minimal stdio MCP server that gives Kiro read-only access to the character
- * database so it can answer questions like "which overheard do we already have?"
+ * database so it can answer questions like "which voices do we already have?"
  * and "is this voice_id unique?" while generating or editing character specs.
  *
  * Protocol: Model Context Protocol over JSON-RPC 2.0 on stdio.

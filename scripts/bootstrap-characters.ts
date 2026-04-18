@@ -1,9 +1,9 @@
 /**
- * Reads every spec under .kiro/specs/, provisions ElevenLabs overheard + agents
+ * Reads every spec under .kiro/specs/, provisions ElevenLabs voices + agents
  * for landmarks and pairings (one-shot, cached in Postgres), and ensures the
  * shared demo user exists.
  *
- * Categories are NOT bootstrapped — their overheard are designed per-object at
+ * Categories are NOT bootstrapped — their voices are designed per-object at
  * runtime inside src/lib/characters.ts (so two photographed plants each get
  * a slightly different voice, instead of one shared plant voice).
  *
