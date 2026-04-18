@@ -1,5 +1,5 @@
-import { Camera } from "@/components/Camera";
+import { Home } from "@/components/Home";
 
 export default function HomePage() {
-  return <Camera />;
+  return <Home />;
 }
