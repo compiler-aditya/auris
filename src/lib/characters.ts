@@ -84,11 +84,17 @@ export async function resolveCharacter(
     };
   }
 
-  // 4. NEW OBJECT branch
-  const categorySlug = normalizeSignature(vision.primary.category);
-  const spec = specs.categories.get(categorySlug);
+  // 4. NEW OBJECT branch.
+  // Gemini may return either a category slug (one of the 12) or an allowed
+  // generic (used for pair matching — "laptop", "candle", etc.). Generics
+  // need to be mapped to the nearest category so we have a spec to drive
+  // voice + ambient generation.
+  const rawCategory = normalizeSignature(vision.primary.category);
+  const categorySlug = resolveCategorySlug(rawCategory);
+  const spec =
+    specs.categories.get(categorySlug) ?? specs.categories.get("artwork");
   if (!spec) {
-    throw new Error(`no category spec for "${categorySlug}"`);
+    throw new Error(`no category spec for "${categorySlug}" and no artwork fallback`);
   }
   // Voice Design requires preview_text to be 100-1000 chars; our hand-authored
   // greetings are typically ~50. Fall back to auto-generated preview text when
@@ -131,6 +137,58 @@ export async function resolveCharacter(
     greeting_text: greeting,
     image_r2_key: greetingKey, // placeholder; handler uses greetingKey for audio
   };
+}
+
+/**
+ * Map a raw subject returned by Gemini to one of our 12 category spec slugs.
+ *
+ * Gemini is instructed to return either a category slug OR an allowed generic
+ * used for pair detection ("laptop", "candle", "pigeon", "coffee-cup", etc.).
+ * Generics don't have their own specs — they only exist so the pair matcher
+ * can look up rare combinations. When a generic is the *primary* subject
+ * (no pair), we fall back to the nearest category archetype so the voice
+ * generation still has a spec to work from.
+ */
+const GENERIC_TO_CATEGORY: Record<string, string> = {
+  pigeon: "animal",
+  candle: "accessory",
+  mirror: "furniture",
+  key: "tool",
+  door: "building",
+  plate: "food",
+  fork: "tool",
+  book: "artwork",
+  pen: "tool",
+  paper: "artwork",
+  "coffee-cup": "food",
+  laptop: "appliance",
+  ring: "accessory",
+  letter: "artwork",
+};
+
+function resolveCategorySlug(raw: string): string {
+  // Already one of the 12 categories? Use as-is.
+  const CATEGORIES = new Set([
+    "houseplant",
+    "appliance",
+    "furniture",
+    "vehicle",
+    "food",
+    "tool",
+    "accessory",
+    "building",
+    "landscape",
+    "street-object",
+    "animal",
+    "artwork",
+  ]);
+  if (CATEGORIES.has(raw)) return raw;
+  const mapped = GENERIC_TO_CATEGORY[raw];
+  if (mapped) return mapped;
+  // Unknown subject — default to artwork ("observing the observer" is the
+  // widest-fitting archetype and it's authored to work on anything viewed).
+  console.warn(`[characters] unknown category "${raw}", falling back to artwork`);
+  return "artwork";
 }
 
 async function findPairSpec(a: string, b: string): Promise<
